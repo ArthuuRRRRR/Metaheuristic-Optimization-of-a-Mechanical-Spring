@@ -22,4 +22,9 @@ def verification_bornes(valeurs_in):
     else :
         return False
 
+def penaliser_algo():
+    pass
 
+def main():
+    n=50
+    return 0
