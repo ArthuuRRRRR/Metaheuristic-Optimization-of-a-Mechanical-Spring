@@ -1,15 +1,31 @@
 import numpy as np
 
-class Hill_Climbing:
-    
+class Hill_Climbing_1_1:
+
     def __init__ (self, n_iter, fonction, variable, pas):
         self.n_iter = n_iter
         self.fonction = fonction
         self.variable = variable
         self.pas = pas
+        np.random.seed(42)
     
     def choix_voisin(self, x):
-        pass
+        voisin = np.copy(x)
+        variable_hasard = np.random.choice([0, 1, 2])
+
+        if np.random.rand() < 0.5:
+            voisin[variable_hasard] += self.pas
+        else:
+            voisin[variable_hasard] -= self.pas
+ 
+        for j in range(len(voisin)):
+            if voisin[j] < self.variable[j][0]: 
+                voisin[j] = self.variable[j][0]
+
+            elif voisin[j] > self.variable[j][1]: 
+                voisin[j] = self.variable[j][1]
+        return voisin
+ 
 
     def creation_solution_initiale(self):
         x = []
@@ -19,13 +35,13 @@ class Hill_Climbing:
     
     def run(self):
         x =self.creation_solution_initiale()
-        fonction = self.contraintes_fonction(x)
+        fonction = self.fonction(x)
 
-        history = []
+        history = [(0, fonction)]
 
         for i in range(self.n_iter):
             voisin = self.choix_voisin(x)
-            f_voisin = self.contraintes_fonction(voisin)
+            f_voisin = self.fonction(voisin)
 
             if f_voisin < fonction:
                 x = voisin
@@ -33,7 +49,6 @@ class Hill_Climbing:
             history.append((i, fonction))
 
         return x, fonction, history
-
 
 
 

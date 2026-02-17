@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from recherche_aleatoire import RechercheAleatoire
+from Hill_Climbing_simple_1_1 import Hill_Climbing_1_1  
 
 def fonction_objectives(valeurs_in):
     x1,x2,x3 = valeurs_in
@@ -8,8 +9,8 @@ def fonction_objectives(valeurs_in):
 
 def contraintes_fonction(valeurs_in):
     x1,x2,x3 = valeurs_in
-    g1 = 1 - (x2 ** 3 ) * x3 / 71785 * x1 ** 4 <= 0
-    g2 = 4 * (x2 ** 2 ) - x1 * x2 / 12566 * (x2 * (x1 **3) - x1** 4) <= 0
+    g1 = 1 - ((x2 ** 3 ) * x3) / (71785 * x1 ** 4) <= 0
+    g2 = (4 * (x2 ** 2 ) - x1 * x2) / (12566 * (x2 * (x1 **3) - x1** 4)) <= 0
     g3 = 1 -(140.5 * x1 / ((x2 **2) * x3)) <= 0
     g4 = ((x1 + x2 ) /1.5)-1 <= 0
     return g1,g2,g3,g4
@@ -45,14 +46,22 @@ def main():
     n=100
     variable = [(0.05, 2.0), (0.25, 1.3), (2.0, 15.0)]
 
-    algo = RechercheAleatoire(n, penaliser_algo)
-    meilleur_x, meilleur_solution, history = algo.run()
+    algo_recherche_aleatoire = RechercheAleatoire(n, penaliser_algo)
+    meilleur_x, meilleur_solution, history = algo_recherche_aleatoire.run()
     print("Meilleure solution : ", meilleur_x)
     print("Meilleure valeur : ", meilleur_solution)
-    print("Historique : ", history)
+    #print("Historique : ", history)
 
-    plt.plot( [h[1] for h in history])
-    plt.title('Recherche Aléatoire')
+    algo_hill_climbing = Hill_Climbing_1_1(n, penaliser_algo, variable, 0.01)
+    meilleur_x_hc, meilleur_solution_hc, history_hc = algo_hill_climbing.run()
+
+    print("Meilleure solution Hill Climbing : ", meilleur_x_hc)
+    print("Meilleure valeur Hill Climbing : ", meilleur_solution_hc)
+
+    plt.plot( [h[1] for h in history], label='Recherche Aléatoire')
+    plt.plot( [h[1] for h in history_hc], label='Hill Climbing')
+    plt.title('Comparaison des algorithmes')
+    plt.legend()
     plt.show()
 
 
