@@ -43,6 +43,7 @@ def penaliser_algo(valeurs_in):
 
 def main():
     n=100
+    variable = [(0.05, 2.0), (0.25, 1.3), (2.0, 15.0)]
 
     algo = RechercheAleatoire(n, penaliser_algo)
     meilleur_x, meilleur_solution, history = algo.run()
