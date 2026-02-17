@@ -13,6 +13,7 @@ class RechercheAleatoire:
         meilleur_solution = float('inf')
         history = []
 
+
         for i in range(self.n_iter):
             x1 = np.random.uniform(0.05, 2.0)
             x2 = np.random.uniform(0.25, 1.3)

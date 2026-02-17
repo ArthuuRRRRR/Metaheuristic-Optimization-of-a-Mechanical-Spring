@@ -14,6 +14,13 @@ def contraintes_fonction(valeurs_in):
     g4 = ((x1 + x2 ) /1.5)-1 <= 0
     return g1,g2,g3,g4
 
+def verification_contraintes(valeurs_in):
+    g1,g2,g3,g4 = contraintes_fonction(valeurs_in)
+    if g1 and g2 and g3 and g4 :
+        return True
+    else :
+        return False
+
 """
 def verification_bornes(valeurs_in):
     x1,x2,x3 = valeurs_in
@@ -22,17 +29,30 @@ def verification_bornes(valeurs_in):
     else :
         return False
 """
-def penaliser_algo():
-    pass
+def penaliser_algo(valeurs_in):
+    penalite = 10
+    fonction = fonction_objectives(valeurs_in)
+
+    if verification_contraintes(valeurs_in) == False :
+        penalite += 10
+        return fonction + penalite
+    else :
+        return fonction
+
+        
 
 def main():
-    n=50
+    n=100
 
-    algo = RechercheAleatoire(n, fonction_objectives)
+    algo = RechercheAleatoire(n, penaliser_algo)
     meilleur_x, meilleur_solution, history = algo.run()
     print("Meilleure solution : ", meilleur_x)
     print("Meilleure valeur : ", meilleur_solution)
     print("Historique : ", history)
+
+    plt.plot( [h[1] for h in history])
+    plt.title('Recherche Aléatoire')
+    plt.show()
 
 
 
