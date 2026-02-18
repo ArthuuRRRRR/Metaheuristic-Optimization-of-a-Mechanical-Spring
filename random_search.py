@@ -1,6 +1,6 @@
 import numpy as np
 
-class RechercheAleatoire:
+class RandomSearch:
 
     def __init__ (self, n_iter, fonction):
         self.n_iter = n_iter
