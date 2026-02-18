@@ -7,7 +7,7 @@ class Hill_Climbing_1_1:
         self.fonction = fonction
         self.variable = variable
         self.pas = pas
-        np.random.seed(42)
+        #np.random.seed(42)
     
     def choix_voisin(self, x):
         voisin = np.copy(x)
@@ -37,7 +37,7 @@ class Hill_Climbing_1_1:
         x =self.creation_solution_initiale()
         fonction = self.fonction(x)
 
-        history = [(0, fonction)]
+        history = [(0, x.copy())]
 
         for i in range(self.n_iter):
             voisin = self.choix_voisin(x)
@@ -46,7 +46,7 @@ class Hill_Climbing_1_1:
             if f_voisin < fonction:
                 x = voisin
                 fonction = f_voisin
-            history.append((i, fonction))
+            history.append((i, x.copy()))
 
         return x, fonction, history
 

@@ -10,8 +10,8 @@ def fonction_objectives(valeurs_in):
 def contraintes_fonction(valeurs_in):
     x1,x2,x3 = valeurs_in
     g1 = 1 - ((x2 ** 3 ) * x3) / (71785 * x1 ** 4) <= 0
-    g2 = (4 * (x2 ** 2 ) - x1 * x2) / (12566 * (x2 * (x1 **3) - x1** 4)) <= 0
-    g3 = 1 -(140.5 * x1 / ((x2 **2) * x3)) <= 0
+    g2 = (4 * (x2 ** 2 ) - x1 * x2) / (12566 * (x2 * (x1 **3) - x1** 4)) + (1/ (5108 * (x1**2))) - 1 <= 0
+    g3 = 1 -(140.45 * x1 / ((x2 **2) * x3)) <= 0
     g4 = ((x1 + x2 ) /1.5)-1 <= 0
     return g1,g2,g3,g4
 
@@ -31,11 +31,11 @@ def verification_bornes(valeurs_in):
         return False
 """
 def penaliser_algo(valeurs_in):
-    penalite = 10
+    penalite = 1000
     fonction = fonction_objectives(valeurs_in)
 
     if verification_contraintes(valeurs_in) == False :
-        penalite += 10
+        penalite += penalite *2
         return fonction + penalite
     else :
         return fonction
