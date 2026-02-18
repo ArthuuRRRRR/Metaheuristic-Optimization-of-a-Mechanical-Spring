@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from recherche_aleatoire import RechercheAleatoire
 from Hill_Climbing_simple_1_1 import Hill_Climbing_1_1  
+from generalized_hill_climbing import generalized_hill_climbing
 
 def fonction_objectives(valeurs_in):
     x1,x2,x3 = valeurs_in
@@ -35,7 +36,7 @@ def penaliser_algo(valeurs_in):
     fonction = fonction_objectives(valeurs_in)
 
     if verification_contraintes(valeurs_in) == False :
-        penalite += penalite *2
+        penalite += penalite *1.5
         return fonction + penalite
     else :
         return fonction
@@ -43,23 +44,33 @@ def penaliser_algo(valeurs_in):
         
 
 def main():
-    n=100
+    n=1000
     variable = [(0.05, 2.0), (0.25, 1.3), (2.0, 15.0)]
 
     algo_recherche_aleatoire = RechercheAleatoire(n, penaliser_algo)
     meilleur_x, meilleur_solution, history = algo_recherche_aleatoire.run()
     print("Meilleure solution : ", meilleur_x)
     print("Meilleure valeur : ", meilleur_solution)
-    #print("Historique : ", history)
 
-    algo_hill_climbing = Hill_Climbing_1_1(n, penaliser_algo, variable, 0.01)
-    meilleur_x_hc, meilleur_solution_hc, history_hc = algo_hill_climbing.run()
 
+    algo_hill_climbing1_1 = Hill_Climbing_1_1(n, penaliser_algo, variable, 0.01)
+    meilleur_x_hc, meilleur_solution_hc, history_hc = algo_hill_climbing1_1.run()
+
+    
     print("Meilleure solution Hill Climbing : ", meilleur_x_hc)
     print("Meilleure valeur Hill Climbing : ", meilleur_solution_hc)
 
+    algo_hill_climbing = generalized_hill_climbing(n, penaliser_algo, variable, 0.01, 8)
+    meilleur_x_hc_G, meilleur_solution_hc_G, history_hc_G = algo_hill_climbing.run()
+
+    print("Meilleure solution Hill Climbing : ", meilleur_x_hc_G)
+    print("Meilleure valeur Hill Climbing : ", meilleur_solution_hc_G)
+
     plt.plot( [h[1] for h in history], label='Recherche Aléatoire')
+    plt.show()
     plt.plot( [h[1] for h in history_hc], label='Hill Climbing')
+    plt.show()
+    plt.plot( [h[1] for h in history_hc_G], label='Hill Climbing Généralisé')
     plt.title('Comparaison des algorithmes')
     plt.legend()
     plt.show()
