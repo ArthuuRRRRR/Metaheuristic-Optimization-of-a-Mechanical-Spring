@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 from random_search import RandomSearch
 from Hill_Climbing_simple_1_1 import Hill_Climbing_1_1  
 from generalized_hill_climbing import generalized_hill_climbing
+from creer_le_pickle import creer_pickle
+import pandas as pd
+
 
 def fonction_objectives(valeurs_in):
     x1,x2,x3 = valeurs_in
@@ -32,7 +35,7 @@ def verification_bornes(valeurs_in):
         return False
 """
 def penaliser_algo(valeurs_in):
-    penalite = 1000
+    penalite = 75
     fonction = fonction_objectives(valeurs_in)
 
     if verification_contraintes(valeurs_in) == False :
@@ -41,10 +44,40 @@ def penaliser_algo(valeurs_in):
     else :
         return fonction
 
+
+def analyser_pickle(fichier=r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique\resultats.pkl", algo="hc"):
+    df = pd.read_pickle(fichier)
+
+    data = df[["algo", "itération", "coût"]].groupby(
+        ["algo", "itération"], as_index=False
+    ).agg(
+        min=pd.NamedAgg(column="coût", aggfunc=np.min),
+        max=pd.NamedAgg(column="coût", aggfunc="max"),
+        médiane=pd.NamedAgg(column="coût", aggfunc="median"),
+        q1=pd.NamedAgg(column="coût", aggfunc=lambda x: np.quantile(x, 0.25)),
+        q3=pd.NamedAgg(column="coût", aggfunc=lambda x: np.quantile(x, 0.75)),
+    )
+
+    data_algo = data[data["algo"] == algo]
+
+    ax = data_algo.plot(x="itération", y="médiane", label=f"{algo}_médiane")
+    ax.plot(data_algo["q1"], alpha=0.5)
+    ax.plot(data_algo["q3"], alpha=0.5)
+
+    ax.fill_between(
+        x=data_algo["itération"],
+        y1=data_algo["min"],
+        y2=data_algo["max"],
+        alpha=0.2,
+    )
+
+    ax.set_yscale("log")
+    plt.legend()
+    plt.show()
         
 
 def main():
-    n=1000
+    n=50
     variable = [(0.05, 2.0), (0.25, 1.3), (2.0, 15.0)]
 
     algo_recherche_aleatoire = RandomSearch(n, penaliser_algo)
@@ -53,14 +86,14 @@ def main():
     print("Meilleure valeur : ", meilleur_solution)
 
 
-    algo_hill_climbing1_1 = Hill_Climbing_1_1(n, penaliser_algo, variable, 0.01)
+    algo_hill_climbing1_1 = Hill_Climbing_1_1(n, penaliser_algo, variable, 0.05)
     meilleur_x_hc, meilleur_solution_hc, history_hc = algo_hill_climbing1_1.run()
 
     
     print("Meilleure solution Hill Climbing : ", meilleur_x_hc)
     print("Meilleure valeur Hill Climbing : ", meilleur_solution_hc)
 
-    algo_hill_climbing = generalized_hill_climbing(n, penaliser_algo, variable, 0.01, 8)
+    algo_hill_climbing = generalized_hill_climbing(n, penaliser_algo, variable, 0.05, 8)
     meilleur_x_hc_G, meilleur_solution_hc_G, history_hc_G = algo_hill_climbing.run()
 
     print("Meilleure solution Hill Climbing : ", meilleur_x_hc_G)
@@ -75,6 +108,20 @@ def main():
     plt.legend()
     plt.show()
 
+    """
+    df = creer_pickle(
+    penaliser_algo=penaliser_algo,
+    variable=variable,
+    n_iter=n,
+    nb_simulations=100,
+    pas=0.05,
+    nbr_voisin=8,
+    outfile="resultats.pkl",
+    outcsv="resultats.csv",
+    )
+    print("Pickle créé:", "resultats.pkl")"""
+
+    analyser_pickle(fichier=r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique\resultats.pkl", algo="rand")
 
 
 if __name__ == "__main__":    
