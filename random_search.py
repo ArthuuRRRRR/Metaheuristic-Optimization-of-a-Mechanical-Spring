@@ -24,6 +24,6 @@ class RandomSearch:
             if self.fonction(valeurs_test) < meilleur_solution:
                 meilleur_solution = self.fonction(valeurs_test)
                 meilleur_x = valeurs_test
-            history.append((i, meilleur_x))
+            history.append((i, meilleur_solution))
 
         return meilleur_x, meilleur_solution, history

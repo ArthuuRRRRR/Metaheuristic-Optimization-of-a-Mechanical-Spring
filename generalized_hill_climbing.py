@@ -45,6 +45,6 @@ class generalized_hill_climbing :
                 if f_voisin < fonction:
                     x = voisin
                     fonction = f_voisin
-            history.append((i, x.copy()))
+            history.append((i, fonction))
 
         return x, fonction, history
