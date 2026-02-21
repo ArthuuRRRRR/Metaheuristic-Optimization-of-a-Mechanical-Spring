@@ -13,10 +13,10 @@ def creer_pickle(
     n_iter=200,
     nb_simulations=50,
     pas=0.05,
-    nbr_voisin=8,
+    nbr_voisin=6,
     refroidissement="exponentielle",
-    outfile="resultats.pkl",
-    outcsv="resultats.csv",
+    outfile="resultats7.pkl",
+    outcsv="resultats7.csv",
 ):
 
     colonnes = ["algo", "run_no", "iteration", "cout"]

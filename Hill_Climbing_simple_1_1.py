@@ -11,7 +11,7 @@ class Hill_Climbing_1_1:
     
     def choix_voisin(self, x):
         voisin = np.copy(x)
-        variable_hasard = np.random.choice([0, 1, 2])
+        variable_hasard = np.random.choice(len(x))
 
         if np.random.rand() < 0.5:
             voisin[variable_hasard] += self.pas
@@ -33,11 +33,23 @@ class Hill_Climbing_1_1:
             x.append(np.random.uniform(var[0], var[1]))
         return np.array(x)
     
+    def stagnation_check(self, history, stagnation_threshold=50, epsilon=0.001):
+
+        if len(history) < stagnation_threshold:
+            return False
+
+        last_costs = [h[1] for h in history[-stagnation_threshold:]]
+
+        improvement = abs(last_costs[0] - last_costs[-1])
+
+        return improvement < epsilon
+
+    
     def run(self):
         x =self.creation_solution_initiale()
         fonction = self.fonction(x)
 
-        history = [(0, x.copy())]
+        history = [(0, fonction)]
 
         for i in range(self.n_iter):
             voisin = self.choix_voisin(x)

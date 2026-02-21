@@ -15,7 +15,7 @@ class SimulatedAnnealing:
         return np.array(x)
     def choix_voisin(self, x):
         voisin = np.copy(x)
-        variable_hasard = np.random.choice([0, 1, 2])
+        variable_hasard = np.random.choice(len(x))
 
         if np.random.rand() < 0.5:
             voisin[variable_hasard] += self.pas
@@ -53,7 +53,7 @@ class SimulatedAnnealing:
         fx = float(best_fx)
         return x, fx
 
-    def stagnation_check(self, history, stagnation_threshold=10, epsilon=1e-6):
+    def stagnation_check(self, history, stagnation_threshold=50, epsilon=0.001):
 
         if len(history) < stagnation_threshold:
             return False
@@ -64,7 +64,6 @@ class SimulatedAnnealing:
 
         return improvement < epsilon
 
-        
     
     def run(self):
         x = self.creation_solution_initiale()

@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 class display_result:
-    def load_results(path=r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique\resultats.csv"):
+    def load_results(path):
         if path.endswith(".pkl"):
             df = pd.read_pickle(path)
         elif path.endswith(".csv"):
@@ -21,27 +21,6 @@ class display_result:
         df["cout"] = df["cout"].astype(float)
 
         return df
-
-    def load_results(path=r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique\resultats.csv"):
-        if path.endswith(".pkl"):
-            df = pd.read_pickle(path)
-        elif path.endswith(".csv"):
-            df = pd.read_csv(path)
-        else:
-            raise ValueError("Le fichier doit être .pkl ou .csv")
-
-
-        required = {"algo", "run_no", "iteration", "cout"}
-        missing = required - set(df.columns)
-        if missing:
-            raise ValueError(f"Colonnes manquantes: {missing}. Colonnes trouvées: {list(df.columns)}")
-
-        df = df.copy()
-        df["iteration"] = df["iteration"].astype(int)
-        df["cout"] = df["cout"].astype(float)
-
-        return df
-
 
     def aggregate_convergence(df: pd.DataFrame) -> pd.DataFrame:
         agg = (
