@@ -1,0 +1,8 @@
+Protocole expérimental — TP01 8INF852
+
+Monte-Carlo: 100 runs par algorithme
+Itérations max: 1000
+Pas (voisinage): 0.02
+Voisins GHC (lambda): 15
+Refroidissement SA: exponentielle
+Stagnation: epsilon=0.001, patience=50

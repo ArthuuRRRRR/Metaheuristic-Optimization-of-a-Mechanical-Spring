@@ -110,14 +110,13 @@ def main():
 
     elif choix == "3":
         PATH3 =input("veuillez entrer le chemin d'accès du fichier de résultats :")
-        stats = run_metrics(PATH3,nb_simulations=50,n_iter=1000,pas=0.05,nbr_voisin=8,refroidissement="exponentielle",epsilon=0.001,patience=50,seed=None)
+        stats = run_metrics(PATH3,nb_simulations=100,n_iter=1000,pas=0.02,nbr_voisin=15,refroidissement="exponentielle",epsilon=0.001,patience=50)
         print(stats)
 
     elif choix == "4":
         print("Au revoir !")
     else:
         print("Choix invalide. Veuillez entrer un nombre entre 1 et 4.")
-
 
 if __name__ == "__main__":    
     main()

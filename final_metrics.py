@@ -79,7 +79,7 @@ def plot_boxplot_final(df_final, use_log=True, title="coûts finaux de Monte-Car
     plt.tight_layout()
     plt.show()
 
-def write_protocol(filename, nb_simulations, n_iter, pas, nbr_voisin, refroidissement, epsilon, patience, seed=None):
+def write_protocol(filename, nb_simulations, n_iter, pas, nbr_voisin, refroidissement, epsilon, patience):
     with open(filename, "w", encoding="utf-8") as f:
         f.write("Protocole expérimental — TP01 8INF852\n\n")
         f.write(f"Monte-Carlo: {nb_simulations} runs par algorithme\n")
@@ -88,15 +88,15 @@ def write_protocol(filename, nb_simulations, n_iter, pas, nbr_voisin, refroidiss
         f.write(f"Voisins GHC (lambda): {nbr_voisin}\n")
         f.write(f"Refroidissement SA: {refroidissement}\n")
         f.write(f"Stagnation: epsilon={epsilon}, patience={patience}\n")
-        f.write(f"Seed: {seed}\n")
+        
 
-def run_metrics(results_path, nb_simulations, n_iter, pas, nbr_voisin, refroidissement, epsilon, patience, seed=None):
+def run_metrics(results_path, nb_simulations, n_iter, pas, nbr_voisin, refroidissement, epsilon, patience):
     df = load_results(results_path)
 
     stats, df_final = stats_finales(df)
-    stats.to_csv("final_stats.csv", index=False)
+    part1, part2 = results_path.split("resultats.csv")
 
-    write_protocol("protocole.txt", nb_simulations, n_iter, pas, nbr_voisin, refroidissement, epsilon, patience, seed)
+    write_protocol(part1 + r"\protocole.txt", nb_simulations, n_iter, pas, nbr_voisin, refroidissement, epsilon, patience)
 
     agg = convergence(df)
     plot_convergence(agg, use_log=True)
