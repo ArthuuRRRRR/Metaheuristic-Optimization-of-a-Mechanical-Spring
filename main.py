@@ -25,21 +25,11 @@ def contraintes_fonction(valeurs_in):
 
 def verification_contraintes(valeurs_in):
     g1,g2,g3,g4 = contraintes_fonction(valeurs_in)
-    if g1 <= 0 and g2 <= 0 and g3 <= 0 and g4 <= 0:
+    if (g1 <= 0) and (g2 <= 0) and (g3 <= 0) and (g4 <= 0):
         return True
     else :
         return False
-
-def penaliser_algo(valeurs_in):
-    penalite = 1000
-    fonction = fonction_objectives(valeurs_in)
-
-    if verification_contraintes(valeurs_in) == False :
-        penalite += penalite *1.5
-        return fonction + penalite
-    else :
-        return fonction
-    
+   
 
 def penaliser_algo_2(valeurs_in):
     f = fonction_objectives(valeurs_in)
@@ -53,7 +43,7 @@ def penaliser_algo_2(valeurs_in):
 
     violation_totale = v1*v1 + v2*v2 + v3*v3 + v4*v4
 
-    coef_penalite = 100000  
+    coef_penalite = 90000  
     penalite = coef_penalite * violation_totale
 
     return f + penalite
@@ -91,36 +81,36 @@ def main():
 
     print("Que voulez-vous faire ?")
     print("1. Créer les résultats dans un fichier CSV ou PKL")
-    print("2. Afficher les graphiques de convergence")
-    print("3. Afficher les statistiques des algorithmes")
+    print("2. Afficher la comparaison des différents refroidissements de Simulated Annealing")
+    print("3. Afficher les statistiques de tout les algorithmes")
     print("4. Quitter")
 
 
-    PATH = r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique\resultats10.csv"
+    #PATH1 = r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique" + r"\resultats.pkl"
+    #PATH2 = r"C:\Users\delha\OneDrive\Desktop\Cours_UQAR\Metaheuristique" + r"\resultats.csv"
+
 
     choix = input("Entrez votre choix (1-4) : ")
 
     if choix == "1":
+    
+        PATH =input("Veuillez choisir le chemin de sauvergarde des résultats :")
+        PATH1 = PATH + r"\resultats.pkl"
+        PATH2 = PATH + r"\resultats.csv"
 
-        df = creer_pickle(penaliser_algo=penaliser_algo_2,variable=variable,n_iter=n,nb_simulations=100,pas=0.02,nbr_voisin=15,outfile="resultats10.pkl",outcsv="resultats10.csv",)
-        print("Pickle créé:", "resultats10.pkl")
+
+        df = creer_pickle(penaliser_algo=penaliser_algo_2,variable=variable,n_iter=n,nb_simulations=100,pas=0.02,nbr_voisin=15,outfile=PATH1,outcsv=PATH2)
+        print("Pickle créé:", PATH1)
 
 
     elif choix == "2":
 
         compare_refroidissements(fonction_objectives, variable)
 
-        
-        df = display_result.load_results(PATH)
-        agg = display_result.aggregate_convergence(df)
-
-        display_result.plot_all_algos(agg,algos_order=("RS", "HC", "GHC", "SA"),use_log=True,show_minmax=False, title="Comparaison des métaheuristiques — médiane + Monte-Carlo")
-
-        stagnation = analyse_stagnation(df, n_iter_max=n)
-        print(f"Stagnation détectée pour GHC {stagnation}")
 
     elif choix == "3":
-        stats = run_metrics(PATH,nb_simulations=50,n_iter=1000,pas=0.05,nbr_voisin=8,refroidissement="exponentielle",epsilon=0.001,patience=50,seed=None)
+        PATH3 =input("veuillez entrer le chemin d'accès du fichier de résultats :")
+        stats = run_metrics(PATH3,nb_simulations=50,n_iter=1000,pas=0.05,nbr_voisin=8,refroidissement="exponentielle",epsilon=0.001,patience=50,seed=None)
         print(stats)
 
     elif choix == "4":

@@ -15,8 +15,9 @@ def creer_pickle(
     pas=0.05,
     nbr_voisin=6,
     refroidissement="exponentielle",
-    outfile="resultats7.pkl",
-    outcsv="resultats7.csv",
+    outfile=None,
+    outcsv=None,
+    pas_sa = 0.07
 ):
 
     colonnes = ["algo", "run_no", "iteration", "cout"]
@@ -54,8 +55,7 @@ def creer_pickle(
             rows.append(("GHC", run, int(it), to_cost(val)))
 
         sa = SimulatedAnnealing(
-            n_iter, penaliser_algo, variable, pas, refroidissement
-        )
+            n_iter, penaliser_algo, variable, pas_sa, refroidissement)
         _, _, hist = sa.run()
 
         for it, val in hist:

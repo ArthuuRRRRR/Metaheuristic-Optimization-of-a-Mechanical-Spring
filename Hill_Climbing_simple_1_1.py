@@ -59,9 +59,9 @@ class Hill_Climbing_1_1:
                 x = voisin
                 fonction = f_voisin
             history.append((i, fonction))
+            """ 
+            if self.stagnation_check(history):
+                break"""
 
         return x, fonction, history
-
-
-
 
